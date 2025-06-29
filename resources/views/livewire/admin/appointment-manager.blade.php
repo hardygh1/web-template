@@ -103,6 +103,8 @@
 
                                         <li>
                                             <x-wire-button
+                                                :disabled="$schedule['disabled']"
+                                                :color="$schedule['disabled'] ? 'secondary' : 'primary'"
                                                 x-on:click="selectSchedule({{$availability['doctor']->id}}, '{{$schedule['start_time']}}')"
                                                 x-bind:class="selectedSchedules.doctor_id === {{$availability['doctor']->id}} && selectedSchedules.schedules.includes('{{$schedule['start_time']}}') ? 'opacity-50' : ''"
                                                 class="w-full">
@@ -182,6 +184,7 @@
                                 placeholder="Seleccione un paciente"
                                 :async-data="route('api.patients.index')"
                                 wire:model="appointment.patient_id"
+                                :disabled="isset($appointmentEdit)"
                                 option-label="name"
                                 option-value="id"
                             />

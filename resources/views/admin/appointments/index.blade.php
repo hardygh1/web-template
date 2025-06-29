@@ -17,4 +17,6 @@ title="Citas | Coders Free"
         </x-wire-button>
     </x-slot>
 
+    @livewire('admin.datatables.appointment-table')
+
 </x-admin-layout>
