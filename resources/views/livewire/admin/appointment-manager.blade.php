@@ -57,6 +57,7 @@
                     wire:click="searchAvailability"
                     class="w-full"
                     color="primary"
+                    :disabled="$appointmentEdit && !$appointmentEdit->status->isEditable()"
                 >
                     Buscar disponibilidad
                 </x-wire-button>

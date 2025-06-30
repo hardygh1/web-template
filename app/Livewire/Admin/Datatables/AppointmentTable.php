@@ -44,6 +44,10 @@ class AppointmentTable extends DataTableComponent
                     return $value->format('H:i');
                 })
                 ->sortable(),
+            Column::make("Estado", "status")
+                ->format(function ($value) {
+                    return $value->label();
+                }),
             Column::make("Acciones")
                 ->label(function($row){
                     return view('admin.appointments.actions', [

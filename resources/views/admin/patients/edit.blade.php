@@ -24,7 +24,6 @@
                     <img src="{{ $patient->user->profile_photo_url }}"
                         class="h-20 w-20 rounded-full object-cover object-center" alt="{{ $patient->user->name }}">
 
-
                     <div>
                         <p class="text-2xl font-bold text-gray-900 mb-1">
                             {{ $patient->user->name }}
@@ -208,7 +207,6 @@
          
             </x-tabs>
         </x-wire-card>
-
 
     </form>
 

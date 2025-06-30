@@ -146,7 +146,9 @@ class AppointmentManager extends Component
             return;
         }
 
-        Appointment::create($this->appointment);
+        Appointment::create($this->appointment)
+            ->consultation()
+            ->create([]);
 
         session()->flash('swal', [
             'icon' => 'success',
