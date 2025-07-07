@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AppointmentController;
+use App\Http\Controllers\Admin\CalendarController;
 use App\Http\Controllers\Admin\DoctorController;
 use App\Http\Controllers\Admin\PatientController;
 use App\Http\Controllers\Admin\RoleController;
@@ -25,4 +26,7 @@ Route::get('doctors/{doctor}/schedules', [DoctorController::class, 'schedules'])
 Route::get('appointments/{appointment}/consultation', [AppointmentController::class, 'consultation'])
     ->name('appointments.consultation');
 Route::resource('appointments', AppointmentController::class);
+
+Route::get('calendar', [CalendarController::class, 'index'])
+    ->name('calendar.index');
     
