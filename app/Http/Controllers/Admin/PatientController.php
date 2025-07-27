@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\BloodType;
 use App\Models\Patient;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class PatientController extends Controller
 {
@@ -14,6 +15,7 @@ class PatientController extends Controller
      */
     public function index()
     {
+        Gate::authorize('read_paciente');
         return view('admin.patients.index');
     }
     
@@ -22,8 +24,9 @@ class PatientController extends Controller
      */
     public function edit(Patient $patient)
     {
-        $bloodTypes = BloodType::all();
+        Gate::authorize('update_paciente');
 
+        $bloodTypes = BloodType::all();
         return view('admin.patients.edit', compact('patient', 'bloodTypes'));
     }
 
@@ -32,6 +35,8 @@ class PatientController extends Controller
      */
     public function update(Request $request, Patient $patient)
     {
+        Gate::authorize('update_paciente');
+
         $data = $request->validate([
             'blood_type_id' => 'nullable|exists:blood_types,id',
             'allergies' => 'nullable|string|max:255',

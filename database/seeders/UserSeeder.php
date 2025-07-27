@@ -22,7 +22,7 @@ class UserSeeder extends Seeder
             'address' => 'Calle Falsa 123',
         ]);
 
-        $user->assignRole('Doctor');
+        $user->assignRole('Admin');
 
         $user->doctor()->create();
     }

@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             BloodTypeSeeder::class,
 
+            PermissionSeeder::class,
             RoleSeeder::class,
             UserSeeder::class,
 
