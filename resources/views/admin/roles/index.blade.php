@@ -1,5 +1,5 @@
 <x-admin-layout
-title="Roles | Coders Free"
+title="Roles | Medical"
 :breadcrumbs="[
     [
         'name' => 'Dashboard',

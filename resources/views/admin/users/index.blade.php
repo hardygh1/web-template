@@ -9,7 +9,7 @@ title="Usuarios | Coders Free"
         'name' => 'Usuarios',
     ]
 ]">
-    @can('create_use')
+    @can('create_user')
 
         <x-slot name="action">
             <x-wire-button blue href="{{ route('admin.users.create') }}">
