@@ -3,12 +3,17 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Services\Interfaces\RoleServiceInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
 {
+    public function __construct(private readonly RoleServiceInterface $roles)
+    {
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -34,19 +39,7 @@ class RoleController extends Controller
     public function store(Request $request)
     {
         Gate::authorize('create_role');
-        $request->validate([
-            'name' => 'required|unique:roles,name',
-        ]);
-
-        Role::create(['name' => $request->name]);
-
-        session()->flash('swal', [
-            'icon' => 'success',
-            'title' => 'Rol creado correctamente',
-            'text' => 'El rol ha sido creado exitosamente.',
-        ]);
-
-        return redirect()->route('admin.roles.index');
+        return $this->roles->store($request);
     }
 
     /**
@@ -64,14 +57,8 @@ class RoleController extends Controller
     public function edit(Role $role)
     {
         Gate::authorize('update_role');
-        if ($role->id <= 4) {
-            session()->flash('swal', [
-                'icon' => 'error',
-                'title' => 'Error',
-                'text' => 'No puedes editar este rol.',
-            ]);
-
-            return redirect()->route('admin.roles.index');
+        if ($redirect = $this->roles->guardEditable($role)) {
+            return $redirect;
         }
 
         return view('admin.roles.edit', compact('role'));
@@ -83,19 +70,7 @@ class RoleController extends Controller
     public function update(Request $request, Role $role)
     {
         Gate::authorize('update_role');
-        $request->validate([
-            'name' => 'required|unique:roles,name,' . $role->id,
-        ]);
-
-        $role->update(['name' => $request->name]);
-
-        session()->flash('swal', [
-            'icon' => 'success',
-            'title' => 'Rol actualizado correctamente',
-            'text' => 'El rol ha sido actualizado exitosamente.',
-        ]);
-
-        return redirect()->route('admin.roles.edit', $role);
+        return $this->roles->update($request, $role);
     }
 
     /**
@@ -104,24 +79,6 @@ class RoleController extends Controller
     public function destroy(Role $role)
     {
         Gate::authorize('delete_role');
-        if ($role->id <= 4) {
-            session()->flash('swal', [
-                'icon' => 'error',
-                'title' => 'Error',
-                'text' => 'No puedes eliminar este rol.',
-            ]);
-
-            return redirect()->route('admin.roles.index');
-        }
-
-        $role->delete();
-
-        session()->flash('swal', [
-            'icon' => 'success',
-            'title' => 'Rol eliminado correctamente',
-            'text' => 'El rol ha sido eliminado exitosamente.',
-        ]);
-
-        return redirect()->route('admin.roles.index');
+        return $this->roles->destroy($role);
     }
 }

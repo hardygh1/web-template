@@ -4,7 +4,7 @@ namespace App\Livewire\Admin;
 
 use App\Models\Appointment;
 use App\Models\Speciality;
-use App\Services\AppointmentService;
+use App\Services\Interfaces\AppointmentServiceInterface;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Validation\Rule;
@@ -78,7 +78,7 @@ class AppointmentManager extends Component
             : 'Por definir';
     }
 
-    public function searchAvailability(AppointmentService $service)
+    public function searchAvailability(AppointmentServiceInterface $service)
     {
         $this->validate([
             'search.date' => 'required|date|after_or_equal:today',
@@ -141,7 +141,7 @@ class AppointmentManager extends Component
                 'text' => 'La cita ha sido actualizada exitosamente.',
             ]);
 
-            $this->searchAvailability(new AppointmentService());
+            $this->searchAvailability(app(AppointmentServiceInterface::class));
 
             return;
         }

@@ -4,12 +4,16 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Doctor;
-use App\Models\Speciality;
+use App\Services\Interfaces\DoctorServiceInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
 class DoctorController extends Controller
 {
+    public function __construct(private readonly DoctorServiceInterface $doctors)
+    {
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -25,9 +29,7 @@ class DoctorController extends Controller
     public function edit(Doctor $doctor)
     {
         Gate::authorize('update_doctor');
-
-        $specialities = Speciality::all();
-        return view('admin.doctors.edit', compact('doctor', 'specialities'));
+        return view('admin.doctors.edit', $this->doctors->getEditData($doctor));
     }
 
     /**
@@ -36,23 +38,7 @@ class DoctorController extends Controller
     public function update(Request $request, Doctor $doctor)
     {
         Gate::authorize('update_doctor');
-
-        $data = $request->validate([
-            'speciality_id' => 'nullable|exists:specialities,id',
-            'medical_license_number' => 'nullable|string|max:255|unique:doctors,medical_license_number,' . $doctor->id,
-            'biography' => 'nullable|string',
-            'active' => 'boolean',
-        ]);
-
-        $doctor->update($data);
-
-        session()->flash('swal', [
-            'icon' => 'success',
-            'title' => 'Doctor actualizado',
-            'text' => 'Los datos del doctor se han actualizado correctamente.',
-        ]);
-
-        return redirect()->route('admin.doctors.edit', $doctor);
+        return $this->doctors->update($request, $doctor);
     }
 
     public function schedules(Doctor $doctor)
