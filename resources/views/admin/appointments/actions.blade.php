@@ -1,6 +1,6 @@
 <div class="flex items-center space-x-2">
 
-    @can('update_appointment', $post)
+    @can('update_appointment', $appointment)
     
         <x-wire-button href="{{route('admin.appointments.edit', $appointment)}}" blue xs>
             <i class="fa-solid fa-pen-to-square"></i>

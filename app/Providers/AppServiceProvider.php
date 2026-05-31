@@ -29,6 +29,11 @@ use App\Services\UserService;
 use App\View\Composers\SidebarComposer;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
+use App\Services\DashboardService;
+use App\Services\Interfaces\DashboardServiceInterface;
+
+use App\Repositories\DashboardRepository;
+use App\Repositories\Interfaces\DashboardRepositoryInterface;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -44,12 +49,14 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(SpecialityRepositoryInterface::class, SpecialityRepository::class);
         $this->app->bind(BloodTypeRepositoryInterface::class, BloodTypeRepository::class);
         $this->app->bind(AppointmentRepositoryInterface::class, AppointmentRepository::class);
+        $this->app->bind(DashboardRepositoryInterface::class, DashboardRepository::class);
 
         $this->app->bind(UserServiceInterface::class, UserService::class);
         $this->app->bind(RoleServiceInterface::class, RoleService::class);
         $this->app->bind(DoctorServiceInterface::class, DoctorService::class);
         $this->app->bind(PatientServiceInterface::class, PatientService::class);
         $this->app->bind(AppointmentServiceInterface::class, AppointmentService::class);
+        $this->app->bind(DashboardServiceInterface::class, DashboardService::class);
     }
 
     /**
