@@ -7,6 +7,8 @@ use App\Services\Interfaces\RoleServiceInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Spatie\Permission\Models\Role;
+use App\Http\Controllers\Admin\Permission;
+use Spatie\Permission\Models\Permission as SpatiePermission;
 
 class RoleController extends Controller
 {
@@ -30,7 +32,13 @@ class RoleController extends Controller
     public function create()
     {
         Gate::authorize('create_role');
-        return view('admin.roles.create');
+
+        $permissions = \Spatie\Permission\Models\Permission::all()
+        ->groupBy(function ($permission) {
+            return explode('_', $permission->name)[1] ?? 'general';
+        });
+    
+        return view('admin.roles.create', compact('permissions'));
     }
 
     /**
@@ -61,7 +69,12 @@ class RoleController extends Controller
             return $redirect;
         }
 
-        return view('admin.roles.edit', compact('role'));
+        $permissions = SpatiePermission::all()
+            ->groupBy(function ($permission) {
+                return explode('_', $permission->name)[1] ?? 'general';
+            });
+
+        return view('admin.roles.edit', compact('role', 'permissions'));
     }
 
     /**

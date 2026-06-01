@@ -18,9 +18,20 @@ class RoleService implements RoleServiceInterface
     {
         $data = $request->validate([
             'name' => 'required|unique:roles,name',
+            'permissions' => 'array',
+            'permissions.*' => 'string'
         ]);
 
-        $this->roles->create($data);
+        // 1. Crear rol
+        $role = $this->roles->create([
+            'name' => $data['name'],
+        ]);
+
+        // 2. Limpiar cache Spatie (EVITA 500 ocultos)
+        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
+
+        // 3. Asignar permisos seguros
+        $role->syncPermissions($data['permissions'] ?? []);
 
         session()->flash('swal', [
             'icon' => 'success',
@@ -38,10 +49,16 @@ class RoleService implements RoleServiceInterface
         }
 
         $data = $request->validate([
-            'name' => 'required|unique:roles,name,' . $role->id,
+        'name' => 'required|unique:roles,name,' . $role->id,
+        'permissions' => 'array',
+        'permissions.*' => 'string'
         ]);
 
-        $this->roles->update($role, $data);
+        $this->roles->update($role, [
+        'name' => $data['name'],
+        ]);
+
+        $role->syncPermissions($data['permissions'] ?? []);
 
         session()->flash('swal', [
             'icon' => 'success',
@@ -49,7 +66,7 @@ class RoleService implements RoleServiceInterface
             'text' => 'El rol ha sido actualizado exitosamente.',
         ]);
 
-        return redirect()->route('admin.roles.edit', $role);
+        return redirect()->route('admin.roles.index');
     }
 
     public function destroy(Role $role): RedirectResponse

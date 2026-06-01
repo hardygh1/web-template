@@ -21,6 +21,11 @@
 
             <x-wire-input label="Nombre" name="name" placeholder="Nombre del rol" value="{{ old('name', $role->name) }}" />
 
+            <x-permission-table
+            :permissions="$permissions"
+            :selected="$role->permissions->pluck('name')->toArray()"
+            />
+
             <div class="flex justify-end mt-4">
                 <x-wire-button type="submit" blue>
                     Actualizar

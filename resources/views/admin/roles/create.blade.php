@@ -25,13 +25,16 @@ title="Roles | Coders Free"
                 name="name"
                 placeholder="Nombre del rol"
                 value="{{ old('name') }}"
-                 />
+                />
 
-            <div class="flex justify-end mt-4">
-                <x-wire-button type="submit" blue>
-                    Guardar
-                </x-wire-button>
-            </div>
+            <x-permission-table :permissions="$permissions" />
+                
+
+        <div class="flex justify-end mt-4">
+            <x-wire-button type="submit" blue>
+                Guardar
+            </x-wire-button>
+        </div>
 
         </form>
 
