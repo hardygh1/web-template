@@ -6,13 +6,9 @@ use Illuminate\Support\Collection;
 
 interface DashboardRepositoryInterface
 {
-    public function appointmentsByMonth(): Collection;
+    public function totalUsers(): int;
 
-    public function totalAppointments(): int;
+    public function activeUsers(): int;
 
-    public function todayAppointments(): int;
-
-    public function pendingAppointments(): int;
-
-    public function completedAppointments(): int;
+    public function usersRegisteredToday(): int;
 }

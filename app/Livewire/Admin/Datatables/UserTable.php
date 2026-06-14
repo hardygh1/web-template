@@ -2,49 +2,38 @@
 
 namespace App\Livewire\Admin\Datatables;
 
-use Rappasoft\LaravelLivewireTables\DataTableComponent;
-use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Builder;
+use Livewire\Component;
+use Livewire\WithPagination;
+use Livewire\Attributes\Computed;
 
-class UserTable extends DataTableComponent
+class UserTable extends Component
 {
-    /* protected $model = User::class; */
+    use WithPagination;
 
-    public function builder(): Builder
+    public $search = '';
+    public $perPage = 10;
+
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
+
+    #[Computed]
+    public function users()
     {
         return User::query()
-            ->with('roles');
+            ->when($this->search, function ($query) {
+                $query->where('name', 'like', "%{$this->search}%")
+                    ->orWhere('email', 'like', "%{$this->search}%");
+            })
+            ->paginate($this->perPage);
     }
 
-    public function configure(): void
+    public function render()
     {
-        $this->setPrimaryKey('id');
-    }
-
-    public function columns(): array
-    {
-        return [
-            Column::make("Id", "id")
-                ->sortable(),
-            Column::make("Name", "name")
-                ->sortable(),
-            Column::make("Email", "email")
-                ->sortable(),
-            Column::make("DNI", "dni")
-                ->sortable(),
-            Column::make("Telefono", "phone")
-                ->sortable(),
-            Column::make('Rol', 'roles')
-                ->label(function($row){
-                    return $row->roles->first()?->name ?? 'Sin rol';
-                }),
-            Column::make("Acciones")
-                ->label(function($row){
-                    return view('admin.users.actions', [
-                        'user' => $row
-                    ]);
-                })
-        ];
+        return view('livewire.admin.datatables.user-table', [
+            'users' => $this->users,
+        ]);
     }
 }

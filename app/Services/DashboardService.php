@@ -15,11 +15,9 @@ class DashboardService implements DashboardServiceInterface
     public function getDashboardData(): array
     {
         return [
-            'appointmentsByMonth' => $this->dashboardRepository->appointmentsByMonth(),
-            'totalAppointments' => $this->dashboardRepository->totalAppointments(),
-            'todayAppointments' => $this->dashboardRepository->todayAppointments(),
-            'pendingAppointments' => $this->dashboardRepository->pendingAppointments(),
-            'completedAppointments' => $this->dashboardRepository->completedAppointments(),
+            'totalUsers' => $this->dashboardRepository->totalUsers(),
+            'activeUsers' => $this->dashboardRepository->activeUsers(),
+            'usersRegisteredToday' => $this->dashboardRepository->usersRegisteredToday(),
         ];
     }
 }

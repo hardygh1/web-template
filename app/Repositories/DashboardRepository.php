@@ -2,46 +2,23 @@
 
 namespace App\Repositories;
 
-use App\Models\Appointment;
+use App\Models\User;
 use App\Repositories\Interfaces\DashboardRepositoryInterface;
-use Illuminate\Support\Collection;
-use Carbon\Carbon;
-
 
 class DashboardRepository implements DashboardRepositoryInterface
 {
-    public function appointmentsByMonth(): Collection
+    public function totalUsers(): int
     {
-        return Appointment::selectRaw(
-                'MONTH(date) as month,
-                COUNT(*) as total'
-            )
-            ->whereYear('date', Carbon::now()->year)
-            ->groupByRaw('MONTH(date)')
-            ->orderByRaw('MONTH(date)')
-            ->get();
+        return User::count();
     }
 
-    public function totalAppointments(): int
+    public function activeUsers(): int
     {
-        return Appointment::count();
+        return User::where('email_verified_at', '!=', null)->count();
     }
 
-    public function todayAppointments(): int
+    public function usersRegisteredToday(): int
     {
-        return Appointment::whereDate('date', today())
-            ->count();
-    }
-
-    public function pendingAppointments(): int
-    {
-        return Appointment::where('status', 'pending')
-            ->count();
-    }
-
-    public function completedAppointments(): int
-    {
-        return Appointment::where('status', 'completed')
-            ->count();
+        return User::whereDate('created_at', today())->count();
     }
 }
