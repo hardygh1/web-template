@@ -37,4 +37,22 @@ return [
             'read_user'
         ]
     ],
+    [
+        'type' => 'header',
+        'title' => 'Modulo de Compañias',
+        'can' => [
+            'view_company',
+            'edit_company',
+        ]
+    ],
+    [
+        'type' => 'link',
+        'title' => 'Empresas',
+        'icon' => 'fa-solid fa-building',
+        'route' => 'admin.companies.index',
+        'active' => 'admin.companies.*',
+        'can' => [
+            'view_company'
+        ]
+    ],
 ];

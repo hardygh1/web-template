@@ -6,10 +6,14 @@ use App\Repositories\RoleRepository;
 use App\Repositories\Interfaces\RoleRepositoryInterface;
 use App\Repositories\UserRepository;
 use App\Repositories\Interfaces\UserRepositoryInterface;
+use App\Repositories\CompanyRepository;
+use App\Repositories\Interfaces\CompanyRepositoryInterface;
 use App\Services\RoleService;
 use App\Services\Interfaces\RoleServiceInterface;
 use App\Services\UserService;
 use App\Services\Interfaces\UserServiceInterface;
+use App\Services\CompanyService;
+use App\Services\Interfaces\CompanyServiceInterface;
 use App\View\Composers\SidebarComposer;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -27,10 +31,12 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
         $this->app->bind(RoleRepositoryInterface::class, RoleRepository::class);
+        $this->app->bind(CompanyRepositoryInterface::class, CompanyRepository::class);
         $this->app->bind(DashboardRepositoryInterface::class, DashboardRepository::class);
 
         $this->app->bind(UserServiceInterface::class, UserService::class);
         $this->app->bind(RoleServiceInterface::class, RoleService::class);
+        $this->app->bind(CompanyServiceInterface::class, CompanyService::class);
         $this->app->bind(DashboardServiceInterface::class, DashboardService::class);
     }
 

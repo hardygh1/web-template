@@ -14,59 +14,36 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        Role::create([
-            'name' => 'Admin',
-        ])->givePermissionTo(Permission::all());
-        
-        $roles = [
-            'Paciente' => [
-                'access_dashboard',
+        // Administrador Global
+        $admin = Role::firstOrCreate(['name' => 'Administrador']);
+        $admin->givePermissionTo(Permission::all());
 
-                'create_appointment',
-                'read_appointment',
+        // Company Admin - Administrador de Empresa
+        $companyAdmin = Role::firstOrCreate(['name' => 'Company Admin']);
+        $companyAdmin->givePermissionTo([
+            'access_dashboard',
+            'view_company',
+            'edit_company',
+            'create_user',
+            'read_user',
+            'update_user',
+            'delete_user',
+        ]);
 
-                'read_calendar'
-            ],
-            'Doctor' => [
-                'access_dashboard',
+        // Manager - Gerente de Empresa
+        $manager = Role::firstOrCreate(['name' => 'Gerente']);
+        $manager->givePermissionTo([
+            'access_dashboard',
+            'view_company',
+            'read_user',
+        ]);
 
-                'create_appointment',
-                'read_appointment',
-                'update_appointment',
-                'delete_appointment',
-
-                'read_calendar'
-            ],
-            'Recepcionista' => [
-                'access_dashboard',
-
-                'create_user',
-                'read_user',
-                'update_user',
-                'delete_user',
-
-                'read_paciente',
-                'update_paciente',
-
-                'read_doctor',
-                'update_doctor',
-
-                'create_appointment',
-                'read_appointment',
-                'update_appointment',
-                'delete_appointment',
-
-                'read_calendar',
-            ],
-        ];
-
-        foreach ($roles as $role => $permissions) {
-            Role::create([
-                'name' => $role,
-            ])
-            ->givePermissionTo($permissions);
-        }
-
-        
+        // Usuario Base
+        $user = Role::firstOrCreate(['name' => 'Usuario']);
+        $user->givePermissionTo([
+            'access_dashboard',
+            'view_company',
+            'read_user',
+        ]);
     }
 }
