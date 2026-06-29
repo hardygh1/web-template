@@ -33,16 +33,15 @@ Checklist:
 [✓] migration companies
 [✓] model Company
 [✓] CRUD Company
-[ ] relaciones
+[✓] relaciones (Company hasMany User / User belongsTo Company)
 
 
 ## Multiempresa
 
 
-
-[ ] users.company_id
-[ ] aislamiento por empresa
-[ ] validaciones
+[✓] users.company_id (migration + fillable + seeder con 3 empresas x 10 usuarios)
+[✓] aislamiento por empresa (UserTable filtra por company_id / UserService asigna company_id al crear)
+[ ] validaciones (guard en update/delete: verificar que el usuario target pertenece a la misma empresa)
 
 
 ## Seguridad
@@ -55,7 +54,7 @@ Checklist:
 
 Completion:
 
-Completion: 56% (5 de 9 tareas)
+Completion: 89% (8 de 9 tareas)
 
 
 

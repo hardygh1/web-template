@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Company;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -34,6 +35,7 @@ class User extends Authenticatable
         'dni',
         'phone',
         'address',
+        'company_id',
     ];
 
     /**
@@ -70,14 +72,9 @@ class User extends Authenticatable
         ];
     }
 
-    //Relaciones uno a uno
-    public function patient()
+    public function company()
     {
-        return $this->hasOne(Patient::class);
+        return $this->belongsTo(Company::class);
     }
 
-    public function doctor()
-    {
-        return $this->hasOne(Doctor::class);
-    }
 }

@@ -8,6 +8,7 @@ use App\Repositories\Interfaces\UserRepositoryInterface;
 use App\Services\Interfaces\UserServiceInterface;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserService implements UserServiceInterface
 {
@@ -47,6 +48,9 @@ class UserService implements UserServiceInterface
         $roleId = (int) $data['role_id'];
         unset($data['role_id']);
 
+        $authUser = Auth::user();
+        $data['company_id'] = $authUser->company_id;
+
         $user = $this->users->create($data);
         $this->users->attachRole($user, $roleId);
 
@@ -55,18 +59,6 @@ class UserService implements UserServiceInterface
             'title' => 'Usuario creado correctamente',
             'text' => 'El usuario ha sido creado exitosamente.',
         ]);
-
-        if ($user->hasRole('Paciente')) {
-            $patient = $user->patient()->create([]);
-
-            return redirect()->route('admin.patients.edit', $patient);
-        }
-
-        if ($user->hasRole('Doctor')) {
-            $doctor = $user->doctor()->create([]);
-
-            return redirect()->route('admin.doctors.edit', $doctor);
-        }
 
         return redirect()->route('admin.users.index');
     }

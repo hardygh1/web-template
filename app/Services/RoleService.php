@@ -88,7 +88,7 @@ class RoleService implements RoleServiceInterface
 
     public function guardEditable(Role $role, string $action = 'editar'): ?RedirectResponse
     {
-        if ($role->id > 4) {
+        if ($role->id > 1) {
             return null;
         }
 

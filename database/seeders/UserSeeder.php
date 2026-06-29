@@ -24,6 +24,6 @@ class UserSeeder extends Seeder
             ]
         );
 
-        $user->assignRole('Admin');
+        $user->assignRole('Administrador');
     }
 }
