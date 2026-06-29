@@ -41,6 +41,9 @@ class UserController extends Controller
     public function edit(User $user)
     {
         Gate::authorize('update_user');
+        if ($redirect = $this->users->guardCompany($user)) {
+            return $redirect;
+        }
         return view('admin.users.edit', $this->users->getEditData($user));
     }
 

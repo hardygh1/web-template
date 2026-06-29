@@ -17,4 +17,6 @@ interface UserServiceInterface
     public function update(Request $request, User $user): RedirectResponse;
 
     public function destroy(User $user): RedirectResponse;
+
+    public function guardCompany(User $user): ?RedirectResponse;
 }

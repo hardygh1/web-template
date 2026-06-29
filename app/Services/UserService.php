@@ -63,8 +63,30 @@ class UserService implements UserServiceInterface
         return redirect()->route('admin.users.index');
     }
 
+    public function guardCompany(User $user): ?RedirectResponse
+    {
+
+        $authUser = Auth::user();
+
+        if ($authUser->company_id === $user->company_id) {
+            return null;
+        }
+
+        session()->flash('swal', [
+            'icon' => 'error',
+            'title' => 'Acceso denegado',
+            'text' => 'No puedes realizar esta acción sobre un usuario de otra empresa.',
+        ]);
+
+        return redirect()->route('admin.users.index');
+    }
+
     public function update(Request $request, User $user): RedirectResponse
     {
+        if ($redirect = $this->guardCompany($user)) {
+            return $redirect;
+        }
+
         $data = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
@@ -96,6 +118,10 @@ class UserService implements UserServiceInterface
 
     public function destroy(User $user): RedirectResponse
     {
+        if ($redirect = $this->guardCompany($user)) {
+            return $redirect;
+        }
+
         $this->users->detachRoles($user);
         $this->users->delete($user);
 
